@@ -1,0 +1,1 @@
+[@faker-js/faker]: faker.image.urlLoremFlickr() is deprecated since v10.1.0 and will be removed in v11.0.0. Please use faker.image.url() instead.

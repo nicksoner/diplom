@@ -1,0 +1,2 @@
+Тест 2, пользователи: [ 'standard_user', 'locked_out_user', 'fake_user_1770745926891' ]
+✓ Тест 2: CSS файл проверен через Service
