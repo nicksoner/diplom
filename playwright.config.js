@@ -34,31 +34,31 @@ module.exports = defineConfig({
   },
 
   projects: [
-    {
-      name: 'ui-tests',
-      testDir: './tests/ui/specs',
-      testMatch: '**/*.test.js',  // <- добавлено
-      use: { 
-        ...devices['Desktop Chrome'],
-        viewport: { width: 1920, height: 1080 },
-      },
+  {
+    name: 'ui-tests',
+    testDir: './tests/UI/specs',  // <- заглавные UI
+    testMatch: '**/*.test.js',
+    use: { 
+      ...devices['Desktop Chrome'],
+      viewport: { width: 1920, height: 1080 },
     },
-    {
-      name: 'api-tests',
-      testDir: './tests/api/specs',
-      testMatch: '**/*.test.js',  // <- добавлено
-      use: {
-        baseURL: 'https://www.saucedemo.com',
-        extraHTTPHeaders: {
-          'Accept': 'application/json, text/html, application/xhtml+xml',
-          'User-Agent': 'Diploma-Api-Tests/1.0 (Playwright)',
-          'Accept-Language': 'en-US,en;q=0.9',
-          'Cache-Control': 'no-cache'
-        },
-        screenshot: 'off',
-        video: 'off',
-        trace: 'off'
+  },
+  {
+    name: 'api-tests',
+    testDir: './tests/API/specs',  // <- заглавные API
+    testMatch: '**/*.test.js',
+    use: {
+      baseURL: 'https://www.saucedemo.com',
+      extraHTTPHeaders: {
+        'Accept': 'application/json, text/html, application/xhtml+xml',
+        'User-Agent': 'Diploma-Api-Tests/1.0 (Playwright)',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Cache-Control': 'no-cache'
       },
+      screenshot: 'off',
+      video: 'off',
+      trace: 'off'
     },
-  ],
+  },
+],
 });
