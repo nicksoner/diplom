@@ -1,0 +1,34 @@
+name: Run Auto Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    - run: npm ci
+    - run: npx playwright install --with-deps chromium
+    - run: npm run test:ui
+    - run: npm run test:api
+    - if: always()
+      uses: appleboy/telegram-action@master
+      with:
+        to: \${{ secrets.TELEGRAM_CHAT_ID }}
+        token: \${{ secrets.TELEGRAM_BOT_TOKEN }}
+        message: |
+          Diploma Project: Sauce Demo
+          Tests completed!
+          Status: \${{ job.status }}
+          Branch: \${{ github.ref_name }}
+          Commit: \${{ github.sha }}
+          Author: \${{ github.actor }}
+          URL: https://github.com/\${{ github.repository }}/actions/runs/\${{ github.run_id }}
