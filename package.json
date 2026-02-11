@@ -7,7 +7,9 @@
     "test": "npx playwright test",
     "report": "npx playwright show-report",
     "сodegen": "npx playwright codegen",
-    "ui": "npx playwright test --ui"
+    "ui": "npx playwright test --ui",
+    "test:ui": "npx playwright test --project=ui-tests",
+    "test:api": "npx playwright test --project=api-tests"
   },
   "repository": {
     "type": "git",
