@@ -18,46 +18,27 @@ jobs:
     - run: npm ci
     - run: npx playwright install --with-deps chromium
     
-    # ДИАГНОСТИКА - показываем всю структуру папок
-    - name: 📁 Show full project structure
-      run: |
-        echo "=== CURRENT DIRECTORY ==="
-        pwd
-        echo "=== LIST ALL FILES ==="
-        ls -la
-        echo "=== TESTS FOLDER ==="
-        ls -la tests/ || echo "❌ tests/ not found"
-        echo "=== TESTS/UI FOLDER ==="
-        ls -la tests/UI/ || echo "❌ tests/UI/ not found"
-        echo "=== TESTS/UI/SPECS FOLDER ==="
-        ls -la tests/UI/specs/ || echo "❌ tests/UI/specs/ not found"
-        echo "=== TESTS/API FOLDER ==="
-        ls -la tests/API/ || echo "❌ tests/API/ not found"
-        echo "=== TESTS/API/SPECS FOLDER ==="
-        ls -la tests/API/specs/ || echo "❌ tests/API/specs/ not found"
-        echo "=== PLAYWRIGHT CONFIG ==="
-        cat playwright.config.js | grep -A 10 "projects:"
-    
-    # Запускаем тесты напрямую без npm run
-    - name: 🧪 Run UI tests directly
-      run: |
-        echo "Running UI tests from tests/UI/specs/"
-        npx playwright test tests/UI/specs/*.test.js --project=ui-tests || echo "UI tests failed but continuing"
+    # Запускаем UI тесты
+    - name: 🧪 Run UI tests
+      run: npx playwright test tests/UI/specs/ --project=ui-tests
       continue-on-error: true
       
-    - name: 🧪 Run API tests directly
-      run: |
-        echo "Running API tests from tests/API/specs/"
-        npx playwright test tests/API/specs/*.test.js --project=api-tests || echo "API tests failed but continuing"
+    # Запускаем API тесты  
+    - name: 🧪 Run API tests
+      run: npx playwright test tests/API/specs/ --project=api-tests
       continue-on-error: true
       
+    # Отправляем уведомление в Telegram
     - if: always()
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         message: |
-          Diploma Project: Sauce Demo
-          Tests completed!
-          Status: ${{ job.status }}
-          Branch: ${{ github.ref_name }}
+          🎓 **Diploma Project: Sauce Demo**
+          
+          ✅ **Tests completed!**
+          
+          📊 Status: ${{ job.status }}
+          🌿 Branch: ${{ github.ref_name }}
+          🔗 https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
