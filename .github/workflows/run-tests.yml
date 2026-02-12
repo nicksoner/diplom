@@ -31,10 +31,7 @@ jobs:
     # ✅ Allure TestOps загрузка
     - name: Install Allure TestOps CLI
       if: always()
-      run: |
-        curl -L https://github.com/allure-framework/allure-testops/releases/download/2.5.0/allure-testops_2.5.0_linux_amd64.tar.gz -o allure-testops.tar.gz
-        tar -xzf allure-testops.tar.gz
-        chmod +x allure-testops
+      run: npm install -g @allure/testops-cli
     
     - name: Upload to Allure TestOps
       if: always()
