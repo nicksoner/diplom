@@ -28,19 +28,19 @@ jobs:
       run: npx playwright test tests/API/specs/ --project=api-tests
       continue-on-error: true
     
-    # ✅ Allure TestOps загрузка
-    - name: Install Allure TestOps CLI
+    # ✅ Allure TestOps загрузка (ИСПРАВЛЕНО)
+    - name: Install allurectl
       if: always()
-      run: npm install -g @allure/testops-cli
+      uses: allure-framework/setup-allurectl@v1
+      with:
+        allure-endpoint: ${{ secrets.ALLURE_ENDPOINT }}
+        allure-token: ${{ secrets.ALLURE_TOKEN }}
+        allure-project-id: ${{ secrets.ALLURE_PROJECT_ID }}
     
-    - name: Upload to Allure TestOps
+    - name: Upload results to Allure TestOps
       if: always()
-      run: ./allure-testops upload allure-results
-      env:
-        ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
-        ALLURE_ENDPOINT: https://allure.autotests.cloud
-        ALLURE_PROJECT_ID: 5121
-      
+      run: allurectl upload allure-results
+    
     # Отправляем уведомление в Telegram
     - name: Send Telegram notification
       if: always()
