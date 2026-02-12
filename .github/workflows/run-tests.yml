@@ -27,9 +27,21 @@ jobs:
     - name: 🧪 Run API tests
       run: npx playwright test tests/API/specs/ --project=api-tests
       continue-on-error: true
+    
+    # ✅ Allure TestOps загрузка
+    - name: Upload to Allure TestOps
+      if: always()
+      run: |
+        npm install -g allure-testops
+        allure-testops upload allure-results
+      env:
+        ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
+        ALLURE_ENDPOINT: https://allure.autotests.cloud
+        ALLURE_PROJECT_ID: 1
       
     # Отправляем уведомление в Telegram
-    - if: always()
+    - name: Send Telegram notification
+      if: always()
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -42,13 +54,3 @@ jobs:
           📊 Status: ${{ job.status }}
           🌿 Branch: ${{ github.ref_name }}
           🔗 https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-          - name: Upload to Allure TestOps
-  if: always()
-  run: |
-    npm install -g allure-testops
-    allure-testops upload allure-results
-  env:
-    ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
-    ALLURE_ENDPOINT: https://allure.autotests.cloud
-    ALLURE_PROJECT_ID: 1
