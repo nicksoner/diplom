@@ -29,11 +29,16 @@ jobs:
       continue-on-error: true
     
     # ✅ Allure TestOps загрузка
-    - name: Upload to Allure TestOps
+    - name: Install Allure TestOps CLI
       if: always()
       run: |
-        npm install -g allure/testops
-        allure-testops upload allure-results
+        curl -L https://github.com/allure-framework/allure-testops/releases/download/2.5.0/allure-testops_2.5.0_linux_amd64.tar.gz -o allure-testops.tar.gz
+        tar -xzf allure-testops.tar.gz
+        chmod +x allure-testops
+    
+    - name: Upload to Allure TestOps
+      if: always()
+      run: ./allure-testops upload allure-results
       env:
         ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
         ALLURE_ENDPOINT: https://allure.autotests.cloud
