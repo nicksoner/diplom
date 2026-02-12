@@ -32,12 +32,12 @@ jobs:
     - name: Upload to Allure TestOps
       if: always()
       run: |
-        npm install -g allure-testops
+        npm install -g allure/testops
         allure-testops upload allure-results
       env:
         ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
         ALLURE_ENDPOINT: https://allure.autotests.cloud
-        ALLURE_PROJECT_ID: 1
+        ALLURE_PROJECT_ID: 5121
       
     # Отправляем уведомление в Telegram
     - name: Send Telegram notification
